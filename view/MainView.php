@@ -24,6 +24,12 @@ abstract class MainView {
             $productLogic= new ProductController();
             $stockLogic=new StockController();
             $option=$_POST['option'];
+            $error=null;
+            $rs=null;
+            date_default_timezone_set('America/Lima');
+            $actualD = date('j');
+            $actualM = date('n');
+            $actualY = date('Y');
             switch ($option) {
                 case '1':
                     $log=$productLogic->getAll();
@@ -32,7 +38,12 @@ abstract class MainView {
                         $id2=$value->get_idStock();
                         $input=$inputLogic->searchById($id1);
                         $stock=$stockLogic->searchById($id2);
-                        $list[]=array($value->get_name(),$input->get_name(),$stock->get_quantity(),$stock->get_minimum(),$stock->get_unit());
+                        if($stock->get_quantity()<$stock->get_minimum()){
+                            $color='<font color="#FF000">'.$stock->get_quantity().'</font>';
+                        }  else {
+                            $color=$stock->get_quantity();
+                        }
+                        $list[]=array($value->get_name(),$input->get_name(),$color,$stock->get_minimum(),$stock->get_unit());
                     }
                     self::_stockListShow($list);
                     break;
@@ -41,7 +52,6 @@ abstract class MainView {
                     break;
                 case '3':
                     $i=0;
-                    $error=null;
                     $list=$inputLogic->getAll();
                     self::_insertProduct($list,$i,$error);
                     break;
@@ -55,7 +65,7 @@ abstract class MainView {
                         $stock=$stockLogic->searchById($id2);
                         $list[]=array($value->get_name(),$input->get_name(),$stock->get_quantity());
                     }
-                    self::_shoppingList($list,$i);
+                    self::_shoppingList($list,$i,$error);
                     break;
                 case 'Volver':
                     self::_principalShow();
@@ -71,11 +81,9 @@ abstract class MainView {
                         foreach ($logP as $value){
                             if($value->get_name()==$_name){
                                 $rs[]=true;
-                            }  else {
-                                $rs[]=false;
                             }
                         }
-                        if($rs[0]==false){
+                        if($rs[0]!=1){
                             if (is_numeric($_POST['quantity'])&&is_numeric($_POST['minimum'])&&is_numeric($_POST['unit'])) {
                                     foreach ($logS as $value) {
                                         $idLastStock=$value->get_id();
@@ -99,11 +107,72 @@ abstract class MainView {
                     }  else {
                         $error='Falta llenar los datos';
                         self::_insertProduct($list,$i,$error);
-                    }                    
+                    }
                     break;
                 case 'Comprar':
+                    $logS=$stockLogic->getAll();
+                    $i=0;
+                    $j=0;
+                    $z=0;
+                    foreach ($logS as $value) {
+                        $j+=1;
+                        $array=$_POST["lessQuantity".$j];
+                        if (($array>($value->get_quantity()))||($array<0)){
+                            $rs[]=true;
+                        }                        
+                    }
+                    if ($rs[0]==1) {
+                        $log=$productLogic->getAll();
+                        foreach ($log as $value) {
+                            $id1=$value->get_idInput();
+                            $id2=$value->get_idStock();
+                            $input=$inputLogic->searchById($id1);
+                            $stock=$stockLogic->searchById($id2);
+                            $list[]=array($value->get_name(),$input->get_name(),$stock->get_quantity());
+                        }
+                        $error="Esta fuera del rango de la cantidad";
+                        self::_shoppingList($list, $i, $error);
+                    }  else {
+                        foreach ($logS as $value) {
+                            $z+=1;
+                            $lessQ=$_POST["lessQuantity".$z];
+                            $_id=$value->get_id();
+                            $_quantity=($value->get_quantity()-$lessQ);
+                            $_minimum=$value->get_minimum();
+                            $_unit=$value->get_unit();
+                            $stockLogic->update($_id, $_quantity, $_minimum, $_unit);
+                        }
+                        self::_insertMessage();
+                    }                    
+                    break;                
+                case 'Pedido':
+                    $log=$productLogic->getAll();
+                    foreach ($log as $value) {
+                        $id2=$value->get_idStock();
+                        $stock=$stockLogic->searchById($id2);
+                        if($stock->get_quantity()<$stock->get_minimum()){
+                            $rs[]=true;
+                        }                        
+                    }
+                    if($rs[0]==1){
+                        foreach ($log as $value) {
+                            $id1=$value->get_idInput();
+                            $id2=$value->get_idStock();
+                            $input=$inputLogic->searchById($id1);
+                            $stock=$stockLogic->searchById($id2);
+                            if($stock->get_quantity()<$stock->get_minimum()){
+                                $rs[]=true;
+                            }
+                            $list[]=array($value->get_name(),$input->get_name(),$stock->get_minimum(),$stock->get_unit());
+                        }
+                    }  else {
+                        $list=array();
+                    }
+                    
+                    self::_orderQuantity($list,$actualD);
                     break;
-                
+                case 'Ordenar':
+                    break;
             }
         }
     }
@@ -122,8 +191,11 @@ abstract class MainView {
     private static function _orderList($list){
         require_once 'orderList.html';
     }
-    private static function _shoppingList($list,$i){
+    private static function _shoppingList($list,$i,$error){
         require_once 'shoppingList.html';
+    }
+    private static function _orderQuantity($list,$actualD){
+        require_once 'orderQuantity.html';
     }
 }
 MainView::run();

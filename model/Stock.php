@@ -62,7 +62,7 @@ class Stock {
         return $list;
     }
     
-    public function insert($_quantity="", $_minimum="", $_unit=""){
+    public function insert($_quantity, $_minimum, $_unit){
         $sql = "INSERT INTO  `chompaalpaca`.`stocks` (`id` ,`quantity` ,`minimum` ,`unit`)
         VALUES (null,  '".$_quantity."',  '".$_minimum."',  '".$_unit."')";
         $this->executeQuery($sql, 0);
@@ -70,6 +70,13 @@ class Stock {
     
     public function delete($_id){
         $sql="DELETE FROM `chompaalpaca`.`stocks` WHERE `stocks`.`id`= '".$_id."' ";
+        $this->executeQuery($sql, 0);
+    }
+    
+    public function update($_id, $_quantity, $_minimum, $_unit){
+        $sql="UPDATE  `chompaalpaca`.`stocks` SET  
+            `quantity` =  '".$_quantity."',`minimum` =  '".$_minimum."',
+                `unit` =  '".$_unit."' WHERE  `stocks`.`id` ='".$_id."';";
         $this->executeQuery($sql, 0);
     }
 

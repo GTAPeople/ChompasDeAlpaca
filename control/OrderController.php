@@ -22,11 +22,11 @@ class OrderController {
         }
     }
 
-    public function insert($_id, $_orderDate)
+    public function insert($_id, $_orderDate, $_detail)
     {
         $_id=null;
         $obj = new Order();
-        $obj->insert($_orderDate);
+        $obj->insert($_orderDate, $_detail);
     }
 
     public function delete($id)

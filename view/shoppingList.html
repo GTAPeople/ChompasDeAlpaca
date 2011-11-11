@@ -22,12 +22,13 @@ and open the template in the editor.
                         <td><?php echo $value[0]; ?></td>
                         <td><?php echo $value[1]; ?></td>
                         <td><?php echo $value[2]; ?></td>
-                        <td><input type="text" name="lessQuatity<?php echo $i ?>" /></td>
+                        <td><input type="text" name="lessQuantity<?php echo $i ?>" value="0" /></td>
                     </tr>
                     <?php } ?>
                 </table>
-                <input type="submit" name="option" value="Volver" />
+                <?php echo $error ?>
                 <input type="submit" name="option" value="Comprar" />
+                <input type="submit" name="option" value="Volver" />
             </form>
         </div>
     </body>

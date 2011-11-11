@@ -35,6 +35,11 @@ class StockController {
         $obj->delete($id);
     }
     
+    public function update($_id, $_quantity, $_minimum, $_unit){
+        $obj = new Stock();
+        $obj->update($_id, $_quantity, $_minimum, $_unit);
+    }
+
     public function searchById($id){
         try {
             $obj = new Stock();
