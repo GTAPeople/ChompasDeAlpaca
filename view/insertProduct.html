@@ -1,0 +1,40 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chompa Alpaca</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div>
+            <h1>Ingresar nuevos productos</h1>
+            <form method="post" action="">
+                <table border="1px" cellspacing="0">
+                    <tr>
+                        <th>Chompa</th><th>Insumo</th><th>Cantidad</th><th>Minimo</th><th>Unidad</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="name" /></td>
+                        <td>
+                            <select name="input">
+                                <?php foreach($list as $value){ ?>
+                                <?php $i+=1 ?>
+                                <option value="<?php echo $i?>"><?php echo $value->get_name(); ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td><input type="text" name="quantity" /></td>
+                        <td><input type="text" name="minimum" /></td>
+                        <td><input type="text" name="unit" /></td>
+                    </tr>
+                </table>
+                <?php echo $error; ?>
+                <input type="submit" name="option" value="Volver" />
+                <input type="submit" name="option" value="Insertar" />
+            </form>
+        </div>
+    </body>
+</html>

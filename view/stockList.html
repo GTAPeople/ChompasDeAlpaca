@@ -1,0 +1,33 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chompa Alpaca</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div>
+            <h1>Ver el stock y las cantidades</h1>
+            <form method="post" action="">
+                <table border="1px" cellspacing="0">
+                    <tr>
+                        <th>Chompa</th><th>Insumo</th><th>Cantidad</th><th>Minimo</th><th>Unidad</th>
+                    </tr>
+                    <?php foreach($list as $value){ ?>
+                    <tr>
+                        <td><?php echo $value[0]; ?></td>
+                        <td><?php echo $value[1]; ?></td>
+                        <td><?php echo $value[2]; ?></td>
+                        <td><?php echo $value[3]; ?></td>
+                        <td><?php echo $value[4]; ?></td>
+                    </tr>
+                    <?php } ?>
+                </table>
+                <input type="submit" name="option" value="Volver" />
+            </form>
+        </div>
+    </body>
+</html>
