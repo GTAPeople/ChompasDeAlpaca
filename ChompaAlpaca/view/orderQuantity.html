@@ -1,0 +1,38 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chompa Alpaca</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div>
+            <h1>Pedido del d&iacute;a <?php echo $actualD; ?> de <? echo $actualM; ?></h1>
+            <form method="post" action="">
+                <table border="1px" cellspacing="0">
+                    <?php if($e==0){?>
+                    <?php foreach($list as $value){ ?>
+                    <tr>
+                        <td><?php echo $value[0]; ?></td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>
+                            Enviar lo solicitado al almac&eacute;n
+                            <input type="submit" name="option" value="Ordenar" />
+                        </td>                        
+                    </tr>
+                    <?php }else{ ?>
+                    <tr>
+                        <td><?php echo $list; ?></td>
+                    </tr>
+                    <?php } ?>
+                </table>                
+                <input type="submit" name="option" value="Volver" />
+            </form>
+        </div>
+    </body>
+</html>

@@ -38,8 +38,8 @@ class Order {
         $db= Persistence::getInstance();
         $select = $db->executeQuery($sql, $tipo);
         if($tipo==1){
-            $select = array();
-            foreach($list as $value){
+            $list = array();
+            foreach($select as $value){
                 $_id = $value['id'];
                 $_orderDate= $value['orderDate'];
                 $_detail=$value['detail'];

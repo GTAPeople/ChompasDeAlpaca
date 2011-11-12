@@ -48,6 +48,7 @@ abstract class MainView {
                     self::_stockListShow($list);
                     break;
                 case '2':
+                    $list=$orderLogic->getAll();
                     self::_orderList($list);
                     break;
                 case '3':
@@ -155,23 +156,48 @@ abstract class MainView {
                         }                        
                     }
                     if($rs[0]==1){
+                        $e=0;
                         foreach ($log as $value) {
                             $id1=$value->get_idInput();
                             $id2=$value->get_idStock();
                             $input=$inputLogic->searchById($id1);
                             $stock=$stockLogic->searchById($id2);
                             if($stock->get_quantity()<$stock->get_minimum()){
-                                $rs[]=true;
-                            }
-                            $list[]=array($value->get_name(),$input->get_name(),$stock->get_minimum(),$stock->get_unit());
+                                $inputName=$input->get_name();
+                                $stockUnit=$stock->get_unit();
+                                $message="Se solicita $stockUnit de material del tipo $inputName";
+                                $list[]=array($message);
+                            }                            
                         }
                     }  else {
-                        $list=array();
+                        $e=1;
+                        $list="No es necesario hacer el pedido";
                     }
-                    
-                    self::_orderQuantity($list,$actualD);
+                    self::_orderQuantity($list,$actualD,$actualM,$e);
                     break;
                 case 'Ordenar':
+                    $log=$productLogic->getAll();
+                    
+                    foreach ($log as $value) {
+                        $id1=$value->get_idInput();
+                        $id2=$value->get_idStock();
+                        $input=$inputLogic->searchById($id1);
+                        $stock=$stockLogic->searchById($id2);
+                        if($stock->get_quantity()<$stock->get_minimum()){
+                            $prodName=$value->get_name();
+                            $inputName=$input->get_name();
+                            $oldQuantity=$stock->get_quantity();
+                            $_id=$stock->get_id();
+                            $_quantity=($oldQuantity+$stock->get_unit());
+                            $_minimum=$stock->get_minimum();
+                            $_unit=$stock->get_unit();
+                            $_detail="Producto: $prodName, Insumo: $inputName, Cantidad Anterior: $oldQuantity, Nueva Cantidad: $_quantity";
+                            $_orderDate=date("YmdHis");
+                            $stockLogic->update($_id, $_quantity, $_minimum, $_unit);
+                            $orderLogic->insert($_id, $_orderDate, $_detail);
+                        }                            
+                    }
+                    self::_insertMessage();
                     break;
             }
         }
@@ -194,7 +220,7 @@ abstract class MainView {
     private static function _shoppingList($list,$i,$error){
         require_once 'shoppingList.html';
     }
-    private static function _orderQuantity($list,$actualD){
+    private static function _orderQuantity($list,$actualD,$actualM,$e){
         require_once 'orderQuantity.html';
     }
 }

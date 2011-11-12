@@ -10,17 +10,19 @@ and open the template in the editor.
     </head>
     <body>
         <div>
-            <h1>Pedido <?php echo $date ?></h1>
+            <h1>Ver la lista de pedidos realizados con fecha y detalle</h1>
             <form method="post" action="">
-                <table>
+                <table border="1px" cellspacing="0">
                     <tr>
-                        <td></td>
+                        <th>Fecha</th><th>Detalle</th>
                     </tr>
+                    <?php foreach($list as $value){ ?>
                     <tr>
-                        <td></td>
+                        <td><?php echo $value->get_orderDate(); ?></td>
+                        <td><?php echo $value->get_detail(); ?></td>
                     </tr>
+                    <?php } ?>
                 </table>
-                <input type="submit" name="option" value="Ordenar" />
                 <input type="submit" name="option" value="Volver" />
             </form>
         </div>

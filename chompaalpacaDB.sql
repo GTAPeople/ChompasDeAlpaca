@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 11, 2011 at 09:24 PM
+-- Generation Time: Nov 12, 2011 at 12:08 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -53,12 +53,15 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `orderDate` date NOT NULL,
   `detail` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `orders`
 --
 
+INSERT INTO `orders` (`id`, `orderDate`, `detail`) VALUES
+(1, '2011-11-11', 'Producto: Office, Insumo: Classic, Cantidad Anterior: 50, Nueva Cantidad: 250'),
+(2, '2011-11-11', 'Producto: Gigardo, Insumo: Elegant, Cantidad Anterior: 70, Nueva Cantidad: 250');
 
 -- --------------------------------------------------------
 
@@ -105,9 +108,9 @@ CREATE TABLE IF NOT EXISTS `stocks` (
 --
 
 INSERT INTO `stocks` (`id`, `quantity`, `minimum`, `unit`) VALUES
-(1, 50, 100, 200),
+(1, 250, 100, 200),
 (2, 80, 80, 100),
 (3, 80, 80, 100),
-(4, 70, 120, 180),
+(4, 250, 120, 180),
 (5, 100, 100, 150),
 (6, 150, 150, 200);
